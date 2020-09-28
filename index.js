@@ -28,26 +28,27 @@ program.command('run [file]')
     .action(function(file) {
         const date = new Date();
         const newVersionPre = `${String(date.getFullYear()).substr(2)}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
+        exec("git symbolic-ref --short HEAD", { encoding: 'utf-8' }, (error, stdout, stderr) => {
+            if (fs.existsSync(versionPath)) {
+                const verInfo = fs.readFileSync(versionPath, 'utf-8');
+                const verObj = JSON.parse(verInfo);
+                fs.writeFileSync(versionPath, JSON.stringify({
+                    version: generateVersion(verObj.version, newVersionPre),
+                    branch: stdout,
+                }, null, 2), 'utf-8');
+            } else {
+                fs.writeFileSync(versionPath, JSON.stringify({
+                    version: generateVersion('00000000', newVersionPre),
+                    branch: stdout,
+                }, null, 2), 'utf-8');
+            }
 
-        if (fs.existsSync(versionPath)) {
-            const verInfo = fs.readFileSync(versionPath, 'utf-8');
-            const verObj = JSON.parse(verInfo);
-            fs.writeFileSync(versionPath, JSON.stringify({
-                version: generateVersion(verObj.version, newVersionPre),
-                branch: 'dev',
-            }, null, 2), 'utf-8');
-        } else {
-            fs.writeFileSync(versionPath, JSON.stringify({
-                version: generateVersion('00000000', newVersionPre),
-                branch: 'dev',
-            }, null, 2), 'utf-8');
-        }
-
-        if (file) {
-            exec(`node ${file}`, { encoding: 'utf-8' }, (error, stdout, stderr) => {
-                return;
-            })
-        }
+            if (file) {
+                exec(`node ${file}`, { encoding: 'utf-8' }, (error, stdout, stderr) => {
+                    return;
+                })
+            }
+        })
     });
 
 program.parse(process.argv)
