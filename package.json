@@ -1,6 +1,6 @@
 {
     "name": "version-info-hook",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "版本控制钩子",
     "main": "index.js",
     "scripts": {
