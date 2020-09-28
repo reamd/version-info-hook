@@ -28,17 +28,18 @@ program.command('run <version-path> [file]')
         const date = new Date();
         const newVersionPre = `${String(date.getFullYear()).substr(2)}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
         exec("git symbolic-ref --short HEAD", { encoding: 'utf-8' }, (error, stdout, stderr) => {
+            const branch = stdout.replace(/\n/g, '');
             if (fs.existsSync(versionPath)) {
                 const verInfo = fs.readFileSync(versionPath, 'utf-8');
                 const verObj = JSON.parse(verInfo);
                 fs.writeFileSync(versionPath, JSON.stringify({
                     version: generateVersion(verObj.version, newVersionPre),
-                    branch: stdout,
+                    branch,
                 }, null, 2), 'utf-8');
             } else {
                 fs.writeFileSync(versionPath, JSON.stringify({
                     version: generateVersion('00000000', newVersionPre),
-                    branch: stdout,
+                    branch,
                 }, null, 2), 'utf-8');
             }
 
