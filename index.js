@@ -4,8 +4,6 @@ const program = require('commander');
 const fs = require('fs');
 const { exec } = require('child_process');
 
-const versionPath = './version.json';
-
 const generateVersion = (oldDate, preNewDate) => {
     let res = `${preNewDate}00`;
     const oldPre = oldDate.substr(0, 6);
@@ -23,9 +21,10 @@ program.version('v' + require('./package.json').version, '-v, --version')
     .description('version info hook')
 
 // 
-program.command('run [file]')
+program.command('run <version-path> [file]')
     .description('version info hook start')
-    .action(function(file) {
+    .action(function(versionPath, file) {
+        versionPath += '/version.json';
         const date = new Date();
         const newVersionPre = `${String(date.getFullYear()).substr(2)}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
         exec("git symbolic-ref --short HEAD", { encoding: 'utf-8' }, (error, stdout, stderr) => {
