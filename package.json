@@ -1,0 +1,28 @@
+{
+    "name": "version-info-hook",
+    "version": "0.0.1",
+    "description": "版本控制钩子",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/reamd/version-info-hook.git"
+    },
+    "keywords": [
+        "hook\u001b[D\u001b[D\u001b[D\u001b[Dversion"
+    ],
+    "author": "reamd",
+    "license": "MIT",
+    "bin": {
+        "version-info-hook": "./index.js"
+    },
+    "bugs": {
+        "url": "https://github.com/reamd/version-info-hook/issues"
+    },
+    "homepage": "https://github.com/reamd/version-info-hook#readme",
+    "dependencies": {
+        "commander": "^6.1.0"
+    }
+}
